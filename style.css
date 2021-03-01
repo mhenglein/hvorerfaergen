@@ -1,0 +1,39 @@
+body {
+  overscroll-behavior-y: none;
+}
+
+.grey {
+  color: lightgrey;
+  background-color: darkgrey;
+}
+
+small {
+  font-size: 0.7em;
+}
+
+.badge {
+  padding-top: 0.2em !important;
+  padding-bottom: 0.35em !important;
+}
+
+.progress-reverse {
+  /* background-color: #0d6efd !important; */
+  background-color: #198754 !important;
+}
+
+.progress-bar-reverse {
+  background-color: #e9ecef !important;
+}
+
+.img-thumbnail {
+  cursor: pointer;
+}
+
+.shadow {
+  box-shadow: 0 1px 1px 0 #c7c7c7 inset;
+  background: none repeat scroll 0 0 #e9e9e9;
+}
+
+#updateNow {
+  cursor: pointer;
+}

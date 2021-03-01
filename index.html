@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Er færgen i havn?</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+      crossorigin="anonymous"
+    />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="progress fixed-top">
+      <div
+        class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+        id="progressTimer"
+        role="progressbar"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        style="width: 100%"
+      ></div>
+    </div>
+
+    <main class="container py-5 px-3">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <h1>🚢 Er færgen i havn?</h1>
+          <p class="lead">
+            Hold denne side åben, og få automatisk besked, når en færge er ved at nærme sig.<br />
+
+            Sørg dog for, at du
+            <button class="btn btn-sm btn-outline-danger" id="permission">accepterer notifikationer</button>
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-8 mx-auto">
+          <div class="d-flex justify-content-center">
+            <img src="bell.png" style="width: 75px" class="img-thumbnail mx-1" id="bellSound" />
+            <img src="kevin.png" style="width: 75px" class="img-thumbnail mx-1" id="kevinSound" />
+            <img src="rick.png" style="width: 75px" class="img-thumbnail mx-1" id="rickSound" />
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mb-4 mt-2">
+        <div class="btn-group" role="group" aria-label="Basic outlined example">
+          <button type="button" id="rodbyBtn" class="btn btn-outline-primary px-5 py-2 fs-5 active">Rødbyhavn</button>
+          <button type="button" id="gedserBtn" class="btn btn-outline-primary px-5 py-2 fs-5">Gedser havn</button>
+        </div>
+      </div>
+      <div class="text-center mb-5">
+        <code
+          >Sidst opdateret: <span id="lastUpdated">00:00</span>.
+          <u><span id="updateNow" class="fw-bold">Opdater nu</span></u></code
+        >
+      </div>
+
+      <section id="rodby">
+        <div class="row">
+          <div class="col-md-6 mx-auto mb-2">
+            <div class="card text-center">
+              <div class="card-header my-auto">
+                <h5 class="m-0">M/F Prinsesse Benedikte</h5>
+              </div>
+              <div class="card-body">
+                <h6 class="card-title" id="benedikteTitle">Benedikte er ikke i havn</h6>
+                <ul class="text-start">
+                  <li class="card-text">Nuværende position: <span id="benediktePosition"></span></li>
+                  <li class="card-text">Hastighed: <span id="benedikteSpeed"></span></li>
+                  <li class="card-text">Retning: <span id="benedikteDirection"></span></li>
+                  <li class="card-text">Kurs: <span id="benedikteKurs"></span></li>
+                  <li class="card-text">Status: <span id="benedikteStatus"></span></li>
+                  <li class="card-text">
+                    Kilde:
+                    <a
+                      target="_blank"
+                      href="https://www.vesselfinder.com/da/vessels/PRINSESSE-BENEDIKTE-IMO-9144421-MMSI-219000431"
+                      >Vesselfinder</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer text-muted">
+                <div class="d-flex justify-content-between text-uppercase mb-1">
+                  <span class="badge bg-light text-dark"> <small>Puttgarden</small></span>
+                  <span class="badge bg-light text-dark"><small>Rødby</small></span>
+                </div>
+                <div class="progress">
+                  <div
+                    class="progress-bar"
+                    id="benedikteProgress"
+                    role="progressbar"
+                    style="width: 0%"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 mx-auto mb-2">
+            <div class="card text-center">
+              <div class="card-header">
+                <h5 class="m-0">M/F Deutschland</h5>
+              </div>
+              <div class="card-body">
+                <h6 class="card-title" id="deutschlandTitle">Deutschland er ikke i havn</h6>
+                <ul class="text-start">
+                  <li class="card-text">Nuværende position: <span id="deutschlandPosition"></span></li>
+                  <li class="card-text">Hastighed: <span id="deutschlandSpeed"></span></li>
+                  <li class="card-text">Retning: <span id="deutschlandDirection"></span></li>
+                  <li class="card-text">Kurs: <span id="deutschlandKurs"></span></li>
+                  <li class="card-text">Status: <span id="deutschlandStatus"></span></li>
+                  <li class="card-text">
+                    Kilde:
+                    <a
+                      target="_blank"
+                      href="https://www.vesselfinder.com/da/vessels/DEUTSCHLAND-IMO-9151541-MMSI-211188000"
+                      >Vesselfinder</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer text-muted">
+                <div class="d-flex justify-content-between text-uppercase mb-1">
+                  <span class="badge bg-light text-dark"> <small>Puttgarden</small></span>
+                  <span class="badge bg-light text-dark"><small>Rødby</small></span>
+                </div>
+                <div class="progress">
+                  <div
+                    class="progress-bar"
+                    id="deutschlandProgress"
+                    role="progressbar"
+                    style="width: 0%"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mx-auto mb-2">
+            <div class="card text-center">
+              <div class="card-header my-auto">
+                <h5 class="m-0">M/F Prins Richard</h5>
+              </div>
+              <div class="card-body">
+                <h6 class="card-title" id="richardTitle">Prins Richard er ikke i havn</h6>
+                <ul class="text-start">
+                  <li class="card-text">Nuværende position: <span id="richardPosition"></span></li>
+                  <li class="card-text">Hastighed: <span id="richardSpeed"></span></li>
+                  <li class="card-text">Retning: <span id="richardDirection"></span></li>
+                  <li class="card-text">Kurs: <span id="richardKurs"></span></li>
+                  <li class="card-text">Status: <span id="richardStatus"></span></li>
+                  <li class="card-text">
+                    Kilde:
+                    <a
+                      target="_blank"
+                      href="https://www.vesselfinder.com/da/vessels/PRINS-RICHARD-IMO-9144419-MMSI-219000429"
+                      >Vesselfinder</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer text-muted">
+                <div class="d-flex justify-content-between text-uppercase mb-1">
+                  <span class="badge bg-light text-dark"> <small>Puttgarden</small></span>
+                  <span class="badge bg-light text-dark"><small>Rødby</small></span>
+                </div>
+                <div class="progress">
+                  <div
+                    class="progress-bar"
+                    id="richardProgress"
+                    role="progressbar"
+                    style="width: 0%"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 mx-auto mb-2">
+            <div class="card text-center">
+              <div class="card-header">
+                <h5 class="m-0">M/F Schleswig-Holstein</h5>
+              </div>
+              <div class="card-body">
+                <h6 class="card-title" id="schleswigTitle">Schleswig-Holstein er ikke i havn</h6>
+                <ul class="text-start">
+                  <li class="card-text">Nuværende position: <span id="schleswigPosition"></span></li>
+                  <li class="card-text">Hastighed: <span id="schleswigSpeed"></span></li>
+                  <li class="card-text">Retning: <span id="schleswigDirection"></span></li>
+                  <li class="card-text">Kurs: <span id="schleswigKurs"></span></li>
+                  <li class="card-text">Status: <span id="schleswigStatus"></span></li>
+                  <li class="card-text">
+                    Kilde:
+                    <a
+                      target="_blank"
+                      href="https://www.vesselfinder.com/da/vessels/SCHLESWIG-HOLSTEIN-IMO-9151539-MMSI-211190000"
+                      >Vesselfinder</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer text-muted">
+                <div class="d-flex justify-content-between text-uppercase mb-1">
+                  <span class="badge bg-light text-dark"> <small>Puttgarden</small></span>
+                  <span class="badge bg-light text-dark"><small>Rødby</small></span>
+                </div>
+                <div class="progress">
+                  <div
+                    class="progress-bar"
+                    id="schleswigProgress"
+                    role="progressbar"
+                    style="width: 0%"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mx-auto mb-2">
+            <div class="card text-center">
+              <div class="card-header my-auto">
+                <h5 class="m-0">M/S Holger Danske</h5>
+              </div>
+              <div class="card-body">
+                <h6 class="card-title" id="holgerTitle">Holger Danske er ikke i havn</h6>
+                <ul class="text-start">
+                  <li class="card-text">Nuværende position: <span id="holgerPosition"></span></li>
+                  <li class="card-text">Hastighed: <span id="holgerSpeed"></span></li>
+                  <li class="card-text">Retning: <span id="holgerDirection"></span></li>
+                  <li class="card-text">Kurs: <span id="holgerKurs"></span></li>
+                  <li class="card-text">Status: <span id="holgerStatus"></span></li>
+                  <li class="card-text">
+                    Kilde:
+                    <a
+                      target="_blank"
+                      href="https://www.vesselfinder.com/da/vessels/HOLGER-DANSKE-IMO-7432202-MMSI-219000737"
+                      >Vesselfinder</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer text-muted">
+                <div class="d-flex justify-content-between text-uppercase mb-1">
+                  <span class="badge bg-light text-dark"> <small>Puttgarden</small></span>
+                  <span class="badge bg-light text-dark"><small>Rødby</small></span>
+                </div>
+                <div class="progress">
+                  <div
+                    class="progress-bar"
+                    id="holgerProgress"
+                    role="progressbar"
+                    style="width: 0%"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 mx-auto mb-2">
+            <div class="card text-center">
+              <div class="card-header">
+                <h5 class="m-0">M/F Kronprins Frederik</h5>
+              </div>
+              <div class="card-body">
+                <h6 class="card-title" id="frederikTitle">Kronprins Frederik er ikke i havn</h6>
+                <ul class="text-start">
+                  <li class="card-text">Nuværende position: <span id="frederikPosition"></span></li>
+                  <li class="card-text">Hastighed: <span id="frederikSpeed"></span></li>
+                  <li class="card-text">Retning: <span id="frederikDirection"></span></li>
+                  <li class="card-text">Kurs: <span id="frederikKurs"></span></li>
+                  <li class="card-text">Status: <span id="frederikStatus"></span></li>
+                  <li class="card-text">
+                    Kilde:
+                    <a
+                      target="_blank"
+                      href="https://www.vesselfinder.com/da/vessels/KRONPRINS-FREDERIK-IMO-7803205-MMSI-211757540"
+                      >Vesselfinder</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer text-muted">
+                <div class="d-flex justify-content-between text-uppercase mb-1">
+                  <span class="badge bg-light text-dark"> <small>Puttgarden</small></span>
+                  <span class="badge bg-light text-dark"><small>Rødby</small></span>
+                </div>
+                <div class="progress">
+                  <div
+                    class="progress-bar"
+                    id="frederikProgress"
+                    role="progressbar"
+                    style="width: 0%"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="gedser" hidden>
+        <div class="row my-5">
+          <div class="col-md-6 mx-auto mb-2">
+            <div class="card text-center">
+              <div class="card-header my-auto">
+                <h5 class="m-0">København 🇩🇰</h5>
+              </div>
+              <div class="card-body">
+                <h6 class="card-title" id="københavnTitle">København er ikke i havn</h6>
+                <ul class="text-start">
+                  <li class="card-text">Nuværende position: <span id="københavnPosition"></span></li>
+                  <li class="card-text">Hastighed: <span id="københavnSpeed"></span></li>
+                  <li class="card-text">Retning: <span id="københavnDirection"></span></li>
+                  <li class="card-text">Kurs: <span id="københavnKurs"></span></li>
+                  <li class="card-text">Status: <span id="københavnStatus"></span></li>
+                  <li class="card-text">
+                    Kilde:
+                    <a
+                      target="_blank"
+                      href="https://www.vesselfinder.com/da/vessels/COPENHAGEN-IMO-9587867-MMSI-219423000"
+                      >Vesselfinder</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer text-muted">
+                <div class="d-flex justify-content-between text-uppercase mb-1">
+                  <span class="badge bg-light text-dark"> <small>Rostock</small></span>
+                  <span class="badge bg-light text-dark"><small>Gedser</small></span>
+                </div>
+
+                <div class="progress">
+                  <div
+                    class="progress-bar"
+                    id="københavnProgress"
+                    role="progressbar"
+                    style="width: 0%"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 mx-auto mb-2">
+            <div class="card text-center">
+              <div class="card-header">
+                <h5 class="m-0">Berlin 🇩🇪</h5>
+              </div>
+              <div class="card-body">
+                <h6 class="card-title" id="berlinTitle">Berlin er ikke i havn</h6>
+                <ul class="text-start">
+                  <li class="card-text">Nuværende position: <span id="berlinPosition"></span></li>
+                  <li class="card-text">Hastighed: <span id="berlinSpeed"></span></li>
+                  <li class="card-text">Retning: <span id="berlinDirection"></span></li>
+                  <li class="card-text">Kurs: <span id="berlinKurs"></span></li>
+                  <li class="card-text">Status: <span id="berlinStatus"></span></li>
+                  <li class="card-text">
+                    Kilde:
+                    <a target="_blank" href="https://www.vesselfinder.com/da/vessels/BERLIN-IMO-9587855-MMSI-211727510"
+                      >Vesselfinder</a
+                    >
+                  </li>
+                </ul>
+              </div>
+              <div class="card-footer text-muted">
+                <div class="d-flex justify-content-between text-uppercase mb-1">
+                  <span class="badge bg-light text-dark"> <small>Rostock</small></span>
+                  <span class="badge bg-light text-dark"><small>Gedser</small></span>
+                </div>
+                <div class="progress">
+                  <div
+                    class="progress-bar"
+                    id="berlinProgress"
+                    role="progressbar"
+                    style="width: 0%"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="vesselFinder" class="py-5">
+        <div class="mx-3 my-3">
+          <script type="text/javascript">
+            // Map appearance
+            var width = "100%"; // width in pixels or percentage
+            var height = "300"; // height in pixels
+            var latitude = "54.36"; // center latitude (decimal degrees)
+            var longitude = "12.00"; // center longitude (decimal degrees)
+            var zoom = "9";
+          </script>
+          <script type="text/javascript" src="https://www.vesselfinder.com/aismap.js"></script>
+        </div>
+      </section>
+    </main>
+
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.min.js"
+      integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.1/howler.min.js"
+      integrity="sha512-L6Z/YtIPQ7eU3BProP34WGU5yIRk7tNHk7vaC2dB1Vy1atz6wl9mCkTPPZ2Rn1qPr+vY2mZ9odZLdGYuaBk7dQ=="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+      crossorigin="anonymous"
+    ></script>
+    <script src="scripts.js" defer></script>
+  </body>
+</html>
